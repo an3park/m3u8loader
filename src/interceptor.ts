@@ -49,7 +49,7 @@ class MediaSourceMock extends window.MediaSource {
   addSourceBuffer(mimeType: string): SourceBuffer {
     try {
       const sb = super.addSourceBuffer(mimeType)
-      sb.mode = 'sequence'
+      // sb.mode = 'sequence'
       const mediaSource = this
       const objectURL = objURLStore.get(mediaSource)
       objURLStore.delete(mediaSource)
