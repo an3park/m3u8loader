@@ -1,12 +1,19 @@
 import { mediaElementsStore, MediaEmitter } from './interceptor'
-import Hls from 'hls.js'
 import { parsem3u8 } from './playlistParser'
 
-if (!Hls.isSupported()) {
-  throw new Error('Hls not supported')
-}
+import type HlsType from 'hls.js'
 
-const hls = new Hls()
+// Hls must be installed globaly
+let hls: HlsType
+const install = async () => {
+  const hlslib = await fetch('/hls.min.js').then((r) => r.text())
+  eval.call(window, hlslib)
+  hls = new Hls()
+  if (!Hls.isSupported()) {
+    throw new Error('Hls not supported')
+  }
+}
+install()
 
 export function download(uri: string): MediaEmitter<HTMLMediaElement> {
   const mediaElement: HTMLMediaElement = document.createElement('video')

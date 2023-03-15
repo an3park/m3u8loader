@@ -1,9 +1,9 @@
-import './index.scss'
+import './main.scss'
 import { download, playMedia, saveBlob } from './api'
 import { parsem3u8 } from './playlistParser'
 
 function savem3u8(uri: string) {
-  const chunks = []
+  const chunks: Uint8Array[] = []
   let mimeType = ''
   let duration = 0
   return download(uri)
@@ -28,12 +28,16 @@ function savem3u8(uri: string) {
     )
 }
 
-const getbtn = document.querySelector<HTMLButtonElement>('.getsource')
-const playbtn = document.querySelector<HTMLButtonElement>('.playmedia')
-const parsebtn = document.querySelector<HTMLButtonElement>('.parseplaylist')
-const inputURI = document.querySelector<HTMLDivElement>('.inputm3u8')
-const videotag = document.querySelector<HTMLMediaElement>('video')
-inputURI.innerText = '/index.m3u8'
+const getbtn = document.querySelector<HTMLButtonElement>('.getsource')!
+const playbtn = document.querySelector<HTMLButtonElement>('.playmedia')!
+const parsebtn = document.querySelector<HTMLButtonElement>('.parseplaylist')!
+const inputURI = document.querySelector<HTMLDivElement>('.inputm3u8')!
+const videotag = document.querySelector<HTMLMediaElement>('video')!
+
+const searchparam = new URLSearchParams(location.search).get('q')
+
+inputURI.innerText = searchparam || '/index.m3u8'
+
 getbtn.onclick = () => {
   savem3u8(inputURI.innerText)
 }
@@ -57,7 +61,7 @@ parsebtn.onclick = () => {
         },
         2
       )
-      const pre = document.querySelector<HTMLPreElement>('pre.parse-result')
+      const pre = document.querySelector<HTMLPreElement>('pre.parse-result')!
       pre.innerHTML = res
       pre.querySelectorAll('a').forEach((a) => {
         a.onclick = (event) => {
