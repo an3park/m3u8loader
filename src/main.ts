@@ -2,6 +2,8 @@ import './main.scss'
 import { download, playMedia, saveBlob } from './api'
 import { parsem3u8 } from './playlistParser'
 
+const progressDiv = document.querySelector<HTMLDivElement>('.progress')!
+
 function savem3u8(uri: string) {
   const chunks: Uint8Array[] = []
   let mimeType = ''
@@ -13,19 +15,14 @@ function savem3u8(uri: string) {
       console.log(_mimeType, _duration)
     })
     .on('chunk', (data, endDTS) => {
-      console.log('chunk', endDTS / duration)
+      const progress = (endDTS / duration) * 100
+      progressDiv.style.width = progress + '%'
       chunks.push(data)
     })
-    .on('done', () =>
-      saveBlob(
-        chunks,
-        uri
-          .split('')
-          .filter((c) => /[\w-\.]/.test(c))
-          .join('') + '.mp4',
-        mimeType
-      )
-    )
+    .on('done', () => {
+      progressDiv.style.width = '0'
+      saveBlob(chunks, uri.replace(/[^\w\.]/gi, '') + '.mp4', mimeType)
+    })
 }
 
 const getbtn = document.querySelector<HTMLButtonElement>('.getsource')!

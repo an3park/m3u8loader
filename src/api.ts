@@ -21,11 +21,28 @@ export function download(uri: string): MediaEmitter<HTMLMediaElement> {
   mediaElement.muted = true
   const mediaEmitter = new MediaEmitter<HTMLMediaElement>(mediaElement)
   mediaElementsStore.add(mediaEmitter)
+
+  // const chunks: Uint8Array[] = []
+
+  // hls.on(Hls.Events.BUFFER_APPENDING, (_, e) => {
+  //   if (e.type === 'audio' || e.type === 'audiovideo') {
+  //     chunks.push(e.data)
+  //   }
+  // })
+
+  // hls.on(Hls.Events.BUFFER_EOS, () => {
+  //   if (chunks.length) {
+  //     saveBlob(chunks, uri.replace(/[^\w\.]/gi, '') + '.mp3', 'audio/mp4')
+  //     hls.removeAllListeners()
+  //     chunks.length = 0
+  //   }
+  // })
+
   hls.attachMedia(mediaElement)
   hls.on(Hls.Events.MEDIA_ATTACHED, function () {
     hls.loadSource(uri)
     hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-      console.log('manifest loaded, found ' + data.levels.length + ' quality level')
+      console.log('manifest loaded, found ' + data.levels.length + ' quality level', hls.levels)
     })
   })
   return mediaEmitter

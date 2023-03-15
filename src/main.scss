@@ -84,12 +84,34 @@ body {
       }
     }
 
+    > .progress-container {
+      margin-top: 20px;
+      height: 16px;
+      > .progress {
+        height: 100%;
+        width: 0;
+        background-color: $sr_purple;
+      }
+    }
     > .video-player {
       width: 100%;
-      margin-top: 20px;
     }
     > .headers {
       color: $sr_purple;
+      background-color: #11111155;
+      border-radius: 20px;
+      box-shadow: 0px 0px 90px 90px #11111155;
+    }
+    > .modal {
+      color: #eee;
+      overflow: hidden;
+      background-color: rgba(17, 17, 17, 0.7);
+      border-radius: 20px;
+      box-shadow: 0px 0px 90px 90px rgba(17, 17, 17, 0.7);
+
+      a {
+        color: #7a7adc;
+      }
     }
   }
 }
