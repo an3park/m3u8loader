@@ -6,7 +6,7 @@ import type HlsType from 'hls.js'
 // Hls must be installed globaly
 let hls: HlsType
 const install = async () => {
-  const hlslib = await fetch('/hls.min.js').then((r) => r.text())
+  const hlslib = await fetch('hls.min.js').then((r) => r.text())
   eval.call(window, hlslib)
   hls = new Hls()
   if (!Hls.isSupported()) {
